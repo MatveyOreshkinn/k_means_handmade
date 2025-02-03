@@ -25,7 +25,7 @@ class MyKMeans:
         wcss = 0
         for cluster_idx in range(self.n_clusters):
             cluster_points = X[labels == cluster_idx]
-            if not cluster_points.empty:  # Добавлено условие
+            if not cluster_points.empty:  
               centroid = self.cluster_centers_[cluster_idx]
               for point in cluster_points.values:
                     wcss += distance.euclidean(point, centroid) ** 2
@@ -76,4 +76,15 @@ class MyKMeans:
         self.cluster_centers_ = best_centers
 
     def predict(self, X: pd.DataFrame):
-        pass
+        pred = []
+        for i in range(X.shape[0]):
+            d = float('inf')
+            point = X.iloc[i]
+            for j in range(self.n_clusters):
+                centroid = self.cluster_centers_[j]
+                if d > distance.euclidean(point, centroid):
+                    d = distance.euclidean(point, centroid)
+                    clust = j + 1
+            pred.append(clust)
+
+        return pred
